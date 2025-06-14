@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		40611BBC2DFDCB740093A215 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 40611BBB2DFDCB740093A215 /* Presentation */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		40611B7D2DFD985F0093A215 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -76,6 +80,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40611BBC2DFDCB740093A215 /* Presentation in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -101,6 +106,7 @@
 			children = (
 				40611BA62DFD9D480093A215 /* GitHubUsers */,
 				40611B7F2DFD985F0093A215 /* GitHubUsersTests */,
+				40611BBA2DFDCB740093A215 /* Frameworks */,
 				40611B702DFD985D0093A215 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -113,6 +119,13 @@
 				40611B862DFD985F0093A215 /* GitHubUsersUITests.xctest */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		40611BBA2DFDCB740093A215 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -132,6 +145,7 @@
 			);
 			name = GitHubUsers;
 			packageProductDependencies = (
+				40611BBB2DFDCB740093A215 /* Presentation */,
 			);
 			productName = GitHubUsers;
 			productReference = 40611B6F2DFD985D0093A215 /* GitHubUsers.app */;
@@ -576,6 +590,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		40611BBB2DFDCB740093A215 /* Presentation */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Presentation;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 40611B672DFD985D0093A215 /* Project object */;
 }
