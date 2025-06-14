@@ -29,15 +29,44 @@
 		40611B862DFD985F0093A215 /* GitHubUsersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubUsersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		40611B712DFD985D0093A215 /* GitHubUsers */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			path = GitHubUsers;
-			sourceTree = "<group>";
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		40611BAA2DFD9D480093A215 /* Exceptions for "GitHubUsers" folder in "GitHubUsers" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Assets.xcassets,
+				App/ContentView.swift,
+				App/GitHubUsersApp.swift,
+			);
+			target = 40611B6E2DFD985D0093A215 /* GitHubUsers */;
 		};
+		40611BAB2DFD9D480093A215 /* Exceptions for "GitHubUsers" folder in "GitHubUsersTests" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				App/Assets.xcassets,
+				App/ContentView.swift,
+				App/GitHubUsersApp.swift,
+				DataAccess,
+				Di,
+				Domain,
+				Presentation,
+			);
+			target = 40611B7B2DFD985F0093A215 /* GitHubUsersTests */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
+/* Begin PBXFileSystemSynchronizedRootGroup section */
 		40611B7F2DFD985F0093A215 /* GitHubUsersTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			path = GitHubUsersTests;
+			sourceTree = "<group>";
+		};
+		40611BA62DFD9D480093A215 /* GitHubUsers */ = {
+			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				40611BAA2DFD9D480093A215 /* Exceptions for "GitHubUsers" folder in "GitHubUsers" target */,
+				40611BAB2DFD9D480093A215 /* Exceptions for "GitHubUsers" folder in "GitHubUsersTests" target */,
+			);
+			path = GitHubUsers;
 			sourceTree = "<group>";
 		};
 /* End PBXFileSystemSynchronizedRootGroup section */
@@ -70,7 +99,7 @@
 		40611B662DFD985D0093A215 = {
 			isa = PBXGroup;
 			children = (
-				40611B712DFD985D0093A215 /* GitHubUsers */,
+				40611BA62DFD9D480093A215 /* GitHubUsers */,
 				40611B7F2DFD985F0093A215 /* GitHubUsersTests */,
 				40611B702DFD985D0093A215 /* Products */,
 			);
@@ -101,9 +130,6 @@
 			);
 			dependencies = (
 			);
-			fileSystemSynchronizedGroups = (
-				40611B712DFD985D0093A215 /* GitHubUsers */,
-			);
 			name = GitHubUsers;
 			packageProductDependencies = (
 			);
@@ -126,6 +152,7 @@
 			);
 			fileSystemSynchronizedGroups = (
 				40611B7F2DFD985F0093A215 /* GitHubUsersTests */,
+				40611BA62DFD9D480093A215 /* GitHubUsers */,
 			);
 			name = GitHubUsersTests;
 			packageProductDependencies = (
