@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public protocol GetUsersUseCaseConvertible: Sendable {
-    func execute(since: Int, perPage: Int) async throws -> [User]
+    func execute(since: Int, perPage: Int) async throws -> (users: [User], nextSince: Int?)
 }
 
 public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Sendable {
@@ -20,7 +20,7 @@ public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Senda
         self.repo = repo
     }
     
-    private func execute(since: Int, perPage: Int, completionHandler: @escaping (Result<[User], Error>) -> Void) {
+    private func execute(since: Int, perPage: Int, completionHandler: @escaping (Result<(users: [User], nextSince: Int?), Error>) -> Void) {
         repo
             .getUsers(since: since, perPage: perPage)
             .receive(on: DispatchQueue.main)
@@ -28,13 +28,13 @@ public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Senda
                 if case .failure(let error) = completion {
                     completionHandler(.failure(error))
                 }
-            } receiveValue: { currencyList in
-                completionHandler(.success(currencyList))
+            } receiveValue: { result in
+                completionHandler(.success(result))
             }
             .store(in: &subscriptions)
     }
     
-    public func execute(since: Int, perPage: Int) async throws -> [User] {
+    public func execute(since: Int, perPage: Int) async throws -> (users: [User], nextSince: Int?) {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             self?.execute(since: since, perPage: perPage, completionHandler: { result in
                 switch result {

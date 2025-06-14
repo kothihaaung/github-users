@@ -7,6 +7,7 @@
 
 import Domain
 import Combine
+import Foundation
 
 public class GitHubRepo: GitHubRepoConvertible {
     @MainActor public static let shared = GitHubRepo()
@@ -17,11 +18,41 @@ public class GitHubRepo: GitHubRepoConvertible {
         self.network = network
     }
     
-    public func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error> {
+    public func getUsers(since: Int, perPage: Int) -> AnyPublisher<(users: [User], nextSince: Int?), Error> {
         let api: GitHubAPI = .users(since: since, perPage: perPage)
-        return network
-            .run(api)
-            .map(\.value)
+
+        let publisher: AnyPublisher<Response<[User]>, Error> = network.run(api)
+
+        return publisher
+            .map { response in
+                let nextSince = self.extractNextSince(from: response.response)
+                return (users: response.value, nextSince: nextSince)
+            }
             .eraseToAnyPublisher()
+    }
+
+    
+    func extractNextSince(from response: HTTPURLResponse) -> Int? {
+        guard let linkHeader = response.value(forHTTPHeaderField: "Link") else {
+            return nil
+        }
+
+        // Look for the `rel="next"` link
+        let pattern = #"<(.*?)>; rel="next""#
+        guard let match = linkHeader.range(of: pattern, options: .regularExpression) else {
+            return nil
+        }
+
+        let urlPart = String(linkHeader[match])
+        guard
+            let url = URL(string: urlPart.components(separatedBy: ";").first?.trimmingCharacters(in: CharacterSet(charactersIn: "<>")) ?? ""),
+            let components = URLComponents(url: url, resolvingAgainstBaseURL: false),
+            let sinceValue = components.queryItems?.first(where: { $0.name == "since" })?.value,
+            let since = Int(sinceValue)
+        else {
+            return nil
+        }
+
+        return since
     }
 }

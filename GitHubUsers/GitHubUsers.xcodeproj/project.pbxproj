@@ -18,19 +18,11 @@
 			remoteGlobalIDString = 40611B6E2DFD985D0093A215;
 			remoteInfo = GitHubUsers;
 		};
-		40611B872DFD985F0093A215 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = 40611B672DFD985D0093A215 /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = 40611B6E2DFD985D0093A215;
-			remoteInfo = GitHubUsers;
-		};
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
 		40611B6F2DFD985D0093A215 /* GitHubUsers.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = GitHubUsers.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		40611B7C2DFD985F0093A215 /* GitHubUsersTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubUsersTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		40611B862DFD985F0093A215 /* GitHubUsersUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = GitHubUsersUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -91,13 +83,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		40611B832DFD985F0093A215 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
@@ -116,7 +101,6 @@
 			children = (
 				40611B6F2DFD985D0093A215 /* GitHubUsers.app */,
 				40611B7C2DFD985F0093A215 /* GitHubUsersTests.xctest */,
-				40611B862DFD985F0093A215 /* GitHubUsersUITests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -175,26 +159,6 @@
 			productReference = 40611B7C2DFD985F0093A215 /* GitHubUsersTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
-		40611B852DFD985F0093A215 /* GitHubUsersUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 40611B962DFD985F0093A215 /* Build configuration list for PBXNativeTarget "GitHubUsersUITests" */;
-			buildPhases = (
-				40611B822DFD985F0093A215 /* Sources */,
-				40611B832DFD985F0093A215 /* Frameworks */,
-				40611B842DFD985F0093A215 /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				40611B882DFD985F0093A215 /* PBXTargetDependency */,
-			);
-			name = GitHubUsersUITests;
-			packageProductDependencies = (
-			);
-			productName = GitHubUsersUITests;
-			productReference = 40611B862DFD985F0093A215 /* GitHubUsersUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -209,10 +173,6 @@
 						CreatedOnToolsVersion = 16.4;
 					};
 					40611B7B2DFD985F0093A215 = {
-						CreatedOnToolsVersion = 16.4;
-						TestTargetID = 40611B6E2DFD985D0093A215;
-					};
-					40611B852DFD985F0093A215 = {
 						CreatedOnToolsVersion = 16.4;
 						TestTargetID = 40611B6E2DFD985D0093A215;
 					};
@@ -234,7 +194,6 @@
 			targets = (
 				40611B6E2DFD985D0093A215 /* GitHubUsers */,
 				40611B7B2DFD985F0093A215 /* GitHubUsersTests */,
-				40611B852DFD985F0093A215 /* GitHubUsersUITests */,
 			);
 		};
 /* End PBXProject section */
@@ -248,13 +207,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 		40611B7A2DFD985F0093A215 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		40611B842DFD985F0093A215 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -278,13 +230,6 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		40611B822DFD985F0093A215 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
@@ -292,11 +237,6 @@
 			isa = PBXTargetDependency;
 			target = 40611B6E2DFD985D0093A215 /* GitHubUsers */;
 			targetProxy = 40611B7D2DFD985F0093A215 /* PBXContainerItemProxy */;
-		};
-		40611B882DFD985F0093A215 /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = 40611B6E2DFD985D0093A215 /* GitHubUsers */;
-			targetProxy = 40611B872DFD985F0093A215 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -518,38 +458,6 @@
 			};
 			name = Release;
 		};
-		40611B972DFD985F0093A215 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thihaaung.GitHubUsersUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GitHubUsers;
-			};
-			name = Debug;
-		};
-		40611B982DFD985F0093A215 /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.thihaaung.GitHubUsersUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = GitHubUsers;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -576,15 +484,6 @@
 			buildConfigurations = (
 				40611B942DFD985F0093A215 /* Debug */,
 				40611B952DFD985F0093A215 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		40611B962DFD985F0093A215 /* Build configuration list for PBXNativeTarget "GitHubUsersUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				40611B972DFD985F0093A215 /* Debug */,
-				40611B982DFD985F0093A215 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

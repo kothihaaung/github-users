@@ -25,11 +25,14 @@ class UserListViewModel: ObservableObject {
     
     private func loadUsers() async {
         do {
-            users = try await githubUseCases
+            let result = try await githubUseCases
                 .getUsers
-                .execute(since: 81, perPage: 50)
+                .execute(since: 80, perPage: 50)
+            
+            users = result.users
             
             print("users count: \(users.count)")
+            print("next since: \(result.nextSince ?? 0)")
             print("users: \(users)")
             
         } catch {
