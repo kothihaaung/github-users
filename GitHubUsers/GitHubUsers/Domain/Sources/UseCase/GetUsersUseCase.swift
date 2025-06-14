@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public protocol GetUsersUseCaseConvertible: Sendable {
-    func execute() async throws -> [User]
+    func execute(since: Int, perPage: Int) async throws -> [User]
 }
 
 public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Sendable {
@@ -20,9 +20,9 @@ public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Senda
         self.repo = repo
     }
     
-    private func execute(completionHandler: @escaping (Result<[User], Error>) -> Void) {
+    private func execute(since: Int, perPage: Int, completionHandler: @escaping (Result<[User], Error>) -> Void) {
         repo
-            .users
+            .getUsers(since: since, perPage: perPage)
             .receive(on: DispatchQueue.main)
             .sink { completion in
                 if case .failure(let error) = completion {
@@ -34,9 +34,9 @@ public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Senda
             .store(in: &subscriptions)
     }
     
-    public func execute() async throws -> [User] {
+    public func execute(since: Int, perPage: Int) async throws -> [User] {
         try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.execute(completionHandler: { result in
+            self?.execute(since: since, perPage: perPage, completionHandler: { result in
                 switch result {
                 case .success(let users):
                     continuation.resume(returning: users)

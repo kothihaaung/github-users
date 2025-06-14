@@ -9,5 +9,5 @@ import Foundation
 import Combine
 
 public protocol GitHubRepoConvertible {
-    var users: AnyPublisher<[User], Error> { get }
+    func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error>
 }

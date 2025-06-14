@@ -8,7 +8,7 @@
 import Alamofire
 
 enum GitHubAPI: DataAPI {
-    case users
+    case users(since: Int, perPage: Int)
     case repos(String)
     
     private var baseURL: String { "api.github.com" }
@@ -27,12 +27,25 @@ enum GitHubAPI: DataAPI {
         .get
     }
     
-    var params: [String : any Sendable]? {
+    var headers: HTTPHeaders? {
         [
             "Authorization": "",
             "Accept": "application/vnd.github+json",
             "X-GitHub-Api-Version": "2022-11-28"
         ]
+    }
+    
+    var params: [String: any Sendable]? {
+        switch self {
+        case .users(let since, let perPage):
+            var query: [String: any Sendable] = [:]
+            query["since"] = since
+            query["per_page"] = perPage
+            return query
+            
+        case .repos:
+            return nil
+        }
     }
     
     var encoding: ParameterEncoding {

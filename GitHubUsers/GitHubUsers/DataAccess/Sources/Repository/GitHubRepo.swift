@@ -17,8 +17,8 @@ public class GitHubRepo: GitHubRepoConvertible {
         self.network = network
     }
     
-    public var users: AnyPublisher<[User], Error> {
-        let api: GitHubAPI = .users
+    public func getUsers(since: Int, perPage: Int) -> AnyPublisher<[User], Error> {
+        let api: GitHubAPI = .users(since: since, perPage: perPage)
         return network
             .run(api)
             .map(\.value)

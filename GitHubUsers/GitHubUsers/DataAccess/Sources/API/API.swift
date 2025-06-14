@@ -13,6 +13,7 @@ public protocol API {
 }
 
 public protocol DataAPI: API {
+    var headers: HTTPHeaders? { get }
     var params: [String: Sendable]? { get }
     var encoding: ParameterEncoding { get }
 }

@@ -27,7 +27,8 @@ public struct Network: NetworkConvertible {
             .request(url,
                      method: api.method,
                      parameters: api.params,
-                     encoding: api.encoding)
+                     encoding: api.encoding,
+                     headers: api.headers)
             .validate(statusCode: 200..<300)
             .publishResponse(using: DataResponseSerializer())
             .tryMap { result -> Response<T> in
@@ -37,11 +38,12 @@ public struct Network: NetworkConvertible {
                 else {
                     throw NetworkError.noResponseData
                 }
-                
+
                 let value = try decoder.decode(T.self, from: data)
                 return Response(value: value, response: response)
             }
             .eraseToAnyPublisher()
+
     }
 }
 

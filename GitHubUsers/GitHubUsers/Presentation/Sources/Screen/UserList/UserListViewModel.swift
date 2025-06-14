@@ -27,9 +27,9 @@ class UserListViewModel: ObservableObject {
         do {
             users = try await githubUseCases
                 .getUsers
-                .execute()
-                .sorted { $0.login < $1.login }
+                .execute(since: 81, perPage: 50)
             
+            print("users count: \(users.count)")
             print("users: \(users)")
             
         } catch {
