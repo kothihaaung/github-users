@@ -11,10 +11,12 @@ import DataAccess
 
 public protocol GitHubUseCasesConvertible {
     var getUsers: GetUsersUseCaseConvertible { get }
+    var getUserDetail: GetUserDetailCaseConvertible { get }
 }
 
 @MainActor
 public class GitHubUseCases: GitHubUseCasesConvertible {
     public init() {}
     public let getUsers: GetUsersUseCaseConvertible = GetUsersUseCase(repo: GitHubRepo.shared)
+    public let getUserDetail: GetUserDetailCaseConvertible = GetUserDetailUseCase(repo: GitHubRepo.shared)
 }

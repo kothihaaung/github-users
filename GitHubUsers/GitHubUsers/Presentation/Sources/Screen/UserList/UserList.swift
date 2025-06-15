@@ -15,6 +15,25 @@ public struct UserList: View {
     public init() {}
     
     public var body: some View {
+        VStack {
+            if viewModel.isLoading {
+                ProgressView("Loading...")
+                    .padding()
+            } else {
+                userList
+            }
+        }
+        .task {
+            if viewModel.users.isEmpty {
+                await viewModel.loadUsers()
+            }
+        }
+    }
+}
+
+@available(iOS 16.0, *)
+extension UserList {
+    private var userList: some View {
         NavigationStack(path: $navigationManager.path) {
             VStack {
                 List(viewModel.users, id: \.id) { user in
@@ -22,9 +41,6 @@ public struct UserList: View {
                         .onTapGesture {
                             navigationManager.path.append(.userDetail(user.login))
                         }
-                }
-                .task {
-                    await viewModel.load()
                 }
             }
             .navigationDestination(for: NavigationManager.Path.self) { path in

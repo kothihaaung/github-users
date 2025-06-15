@@ -21,5 +21,6 @@ struct UserRow: View {
             
             Image(systemName: "chevron.right")
         }
+        .contentShape(Rectangle()) // 👈 makes the entire row tappable
     }
 }

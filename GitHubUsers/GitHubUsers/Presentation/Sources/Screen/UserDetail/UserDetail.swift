@@ -10,7 +10,12 @@ import SwiftUI
 public struct UserDetail: View {
     let login: String
     
+    @StateObject private var viewModel = UserDetailViewModel()
+    
     public var body: some View {
-        Text("User Detail: \(login)")
+        Text("User Detail: \(String(describing: viewModel.userDetail))")
+            .task {
+                await viewModel.loadUserDetail(login: login)
+            }
     }
 }

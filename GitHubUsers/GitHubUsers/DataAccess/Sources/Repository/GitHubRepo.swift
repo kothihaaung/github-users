@@ -31,6 +31,14 @@ public final class GitHubRepo: GitHubRepoConvertible, @unchecked Sendable {
             .eraseToAnyPublisher()
     }
     
+    public func getUserDetail(login: String) -> AnyPublisher<UserDetail, Error> {
+        let api: GitHubAPI = .userDetail(login: login)
+
+        return network.run(api)
+            .map(\.value)
+            .eraseToAnyPublisher()
+    }
+    
     private func extractNextSince(from response: HTTPURLResponse) -> Int? {
         guard let linkHeader = response.value(forHTTPHeaderField: "Link") else {
             return nil
