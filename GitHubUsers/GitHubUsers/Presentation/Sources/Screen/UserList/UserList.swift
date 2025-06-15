@@ -7,19 +7,32 @@
 
 import SwiftUI
 
+@available(iOS 16.0, *)
 public struct UserList: View {
+    @EnvironmentObject private var navigationManager: NavigationManager
     @StateObject private var viewModel = UserListViewModel()
     
     public init() {}
     
     public var body: some View {
-        VStack {
-            List(viewModel.users, id: \.id) { user in
-                UserRow(login: user.login, avatarUrl: user.avatarURL)
+        NavigationStack(path: $navigationManager.path) {
+            VStack {
+                List(viewModel.users, id: \.id) { user in
+                    UserRow(login: user.login, avatarUrl: user.avatarURL)
+                        .onTapGesture {
+                            navigationManager.path.append(.userDetail(user.login))
+                        }
+                }
+                .task {
+                    await viewModel.load()
+                }
             }
-        }
-        .task {
-            await viewModel.load()
+            .navigationDestination(for: NavigationManager.Path.self) { path in
+                switch path {
+                case .userDetail(let login):
+                    UserDetail(login: login)
+                }
+            }
         }
     }
 }

@@ -14,9 +14,12 @@ struct UserRow: View {
                 .clipShape(Circle())
                 .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1))
 
-
             Text(login)
                 .font(.headline)
+            
+            Spacer()
+            
+            Image(systemName: "chevron.right")
         }
     }
 }

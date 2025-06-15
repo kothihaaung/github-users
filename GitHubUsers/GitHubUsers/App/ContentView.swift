@@ -9,9 +9,10 @@ import SwiftUI
 import Presentation
 
 struct ContentView: View {
+    @StateObject private var navigationManager = NavigationManager()
+    
     var body: some View {
-        VStack {
-            UserList()
-        }
+        UserList()
+            .environmentObject(navigationManager)
     }
 }
