@@ -9,8 +9,8 @@ import Domain
 import Combine
 import Foundation
 
-public class GitHubRepo: GitHubRepoConvertible {
-    @MainActor public static let shared = GitHubRepo()
+public final class GitHubRepo: GitHubRepoConvertible, @unchecked Sendable {
+    public static let shared = GitHubRepo()
     
     private let network: NetworkConvertible
     
@@ -30,9 +30,8 @@ public class GitHubRepo: GitHubRepoConvertible {
             }
             .eraseToAnyPublisher()
     }
-
     
-    func extractNextSince(from response: HTTPURLResponse) -> Int? {
+    private func extractNextSince(from response: HTTPURLResponse) -> Int? {
         guard let linkHeader = response.value(forHTTPHeaderField: "Link") else {
             return nil
         }

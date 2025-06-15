@@ -11,12 +11,13 @@ import Di
 
 @MainActor
 class UserListViewModel: ObservableObject {
-    @Published var users: [User] = []
+    @Published private(set) var isLoading = true
+    @Published private(set) var users: [User] = []
     
-    private let githubUseCases: GitHubUseCasesConvertible
+    private let gitHubUseCases: GitHubUseCasesConvertible
     
-    init(githubUseCases: GitHubUseCasesConvertible = GitHubUseCases()) {
-        self.githubUseCases = githubUseCases
+    init(gitHubUseCases: GitHubUseCasesConvertible = GitHubUseCases()) {
+        self.gitHubUseCases = gitHubUseCases
     }
     
     public func load() async {
@@ -24,19 +25,22 @@ class UserListViewModel: ObservableObject {
     }
     
     private func loadUsers() async {
+        self.isLoading = true
+        
         do {
-            let result = try await githubUseCases
+            let result = try await gitHubUseCases
                 .getUsers
-                .execute(since: 80, perPage: 50)
+                .execute(since: 0, perPage: 50)
             
             users = result.users
             
             print("users count: \(users.count)")
             print("next since: \(result.nextSince ?? 0)")
-            print("users: \(users)")
             
         } catch {
             print("log: error: loadUsers: \(error)")
         }
+        
+        self.isLoading = false
     }
 }

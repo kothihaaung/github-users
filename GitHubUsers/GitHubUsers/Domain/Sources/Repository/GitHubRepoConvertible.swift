@@ -8,6 +8,6 @@
 import Foundation
 import Combine
 
-public protocol GitHubRepoConvertible {
+public protocol GitHubRepoConvertible: Sendable {
     func getUsers(since: Int, perPage: Int) -> AnyPublisher<(users: [User], nextSince: Int?), Error>
 }

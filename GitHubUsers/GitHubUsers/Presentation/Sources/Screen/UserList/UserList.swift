@@ -13,9 +13,13 @@ public struct UserList: View {
     public init() {}
     
     public var body: some View {
-        Text("UserList")
-            .task {
-                await viewModel.load()
+        VStack {
+            List(viewModel.users, id: \.id) { user in
+                UserRow(login: user.login, avatarUrl: user.avatarURL)
             }
+        }
+        .task {
+            await viewModel.load()
+        }
     }
 }

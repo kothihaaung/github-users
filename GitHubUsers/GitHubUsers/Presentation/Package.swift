@@ -18,6 +18,7 @@ let package = Package(
     dependencies: [
         .package(path: "../Di"),
         .package(path: "../Domain"),
+        .package(url: "https://github.com/SDWebImage/SDWebImageSwiftUI.git", .upToNextMajor(from: "3.1.3")),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
@@ -25,7 +26,8 @@ let package = Package(
         .target(
             name: "Presentation", dependencies: [
                 "Domain",
-                "Di"
+                "Di",
+                "SDWebImageSwiftUI"
             ]),
     ]
 )
