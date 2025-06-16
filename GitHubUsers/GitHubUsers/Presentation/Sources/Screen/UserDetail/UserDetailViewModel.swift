@@ -15,29 +15,25 @@ class UserDetailViewModel: ObservableObject {
     @Published private(set) var userDetail: Domain.UserDetail?
     @Published private(set) var userRepos: [Domain.Repo] = []
     
-    
     private let gitHubUseCases: GitHubUseCasesConvertible
     
     init(gitHubUseCases: GitHubUseCasesConvertible = GitHubUseCases()) {
         self.gitHubUseCases = gitHubUseCases
     }
     
-    func loadUserDetail(login: String) async {
+    func load(login: String) async {
         self.isLoading = true
         
         do {
             let result = try await gitHubUseCases
                 .getUserDetailWithRepos
-                .execute(login: login, perPage: 30)
+                .execute(login: login, perPage: 50)
             
             self.userDetail = result.0
             self.userRepos = result.1
             
-            print("user repos: \(self.userRepos)")
-            print("user detail: \(String(describing: self.userDetail))")
-            
         } catch {
-            print("log: error: loadUserDetail: \(error)")
+            print("log: error: loadUserDetailWithRepos: \(error)")
         }
         
         self.isLoading = false

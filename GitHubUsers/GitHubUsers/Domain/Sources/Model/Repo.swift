@@ -19,7 +19,7 @@ public struct Repo: Decodable, Identifiable, Sendable {
     public let url: String
     public let createdAt: String
     public let updatedAt: String
-    public let pushedAt: String
+    public let pushedAt: String?
     public let gitURL: String
     public let sshURL: String
     public let cloneURL: String

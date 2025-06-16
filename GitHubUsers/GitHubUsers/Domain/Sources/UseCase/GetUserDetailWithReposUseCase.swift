@@ -1,5 +1,5 @@
 //
-//  GetUserDetailWithRepos.swift
+//  GetUserDetailWithReposUseCase.swift
 //  Domain
 //
 //  Created by Thiha the Dev on 2025/06/16.
@@ -22,8 +22,13 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
     
     private func execute(login: String, perPage: Int, completionHandler: @escaping (Result<(UserDetail, [Repo]), Error>) -> Void) {
         let userDetailPublisher = repo.getUserDetail(login: login)
-        let userReposPublisher = repo.getUserRepos(login: login, perPage: perPage)
-
+        let userReposPublisher = repo
+            .getUserRepos(login: login, perPage: perPage)
+            .map { repos in
+                repos.filter { !$0.fork } // filtered out forked repos
+            }
+            .eraseToAnyPublisher()
+        
         Publishers.Zip(userDetailPublisher, userReposPublisher)
             .receive(on: DispatchQueue.main)
             .sink { completion in
@@ -35,7 +40,6 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
             }
             .store(in: &subscriptions)
     }
-
     
     public func execute(login: String, perPage: Int) async throws -> (UserDetail, [Repo]) {
         try await withCheckedThrowingContinuation { [weak self] continuation in
