@@ -12,7 +12,7 @@ struct ContentView: View {
     @StateObject private var navigationManager = NavigationManager()
     
     var body: some View {
-        UserList()
+        UserListView()
             .environmentObject(navigationManager)
     }
 }

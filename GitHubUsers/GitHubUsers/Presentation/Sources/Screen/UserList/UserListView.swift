@@ -1,5 +1,5 @@
 //
-//  UserList.swift
+//  UserListView.swift
 //  Presentation
 //
 //  Created by Thiha the Dev on 2025/06/14.
@@ -8,7 +8,7 @@
 import SwiftUI
 
 @available(iOS 16.0, *)
-public struct UserList: View {
+public struct UserListView: View {
     @EnvironmentObject private var navigationManager: NavigationManager
     @StateObject private var viewModel = UserListViewModel()
     
@@ -32,7 +32,7 @@ public struct UserList: View {
 }
 
 @available(iOS 16.0, *)
-extension UserList {
+extension UserListView {
     private var userList: some View {
         NavigationStack(path: $navigationManager.path) {
             VStack {
@@ -46,7 +46,7 @@ extension UserList {
             .navigationDestination(for: NavigationManager.Path.self) { path in
                 switch path {
                 case .userDetail(let login):
-                    UserDetail(login: login)
+                    UserDetailView(login: login)
                 }
             }
         }

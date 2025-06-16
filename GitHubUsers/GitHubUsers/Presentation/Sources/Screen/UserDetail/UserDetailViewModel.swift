@@ -27,7 +27,7 @@ class UserDetailViewModel: ObservableObject {
         do {
             let result = try await gitHubUseCases
                 .getUserDetailWithRepos
-                .execute(login: login, perPage: 50)
+                .execute(login: login, perPage: 100)
             
             self.userDetail = result.0
             self.userRepos = result.1
