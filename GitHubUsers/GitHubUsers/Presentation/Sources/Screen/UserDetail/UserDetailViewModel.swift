@@ -13,6 +13,8 @@ import Di
 class UserDetailViewModel: ObservableObject {
     @Published private(set) var isLoading = true
     @Published private(set) var userDetail: Domain.UserDetail?
+    @Published private(set) var userRepos: [Domain.Repo] = []
+    
     
     private let gitHubUseCases: GitHubUseCasesConvertible
     
@@ -24,9 +26,15 @@ class UserDetailViewModel: ObservableObject {
         self.isLoading = true
         
         do {
-            self.userDetail = try await gitHubUseCases
-                .getUserDetail
-                .execute(login: login)
+            let result = try await gitHubUseCases
+                .getUserDetailWithRepos
+                .execute(login: login, perPage: 30)
+            
+            self.userDetail = result.0
+            self.userRepos = result.1
+            
+            print("user repos: \(self.userRepos)")
+            print("user detail: \(String(describing: self.userDetail))")
             
         } catch {
             print("log: error: loadUserDetail: \(error)")
