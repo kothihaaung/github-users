@@ -62,12 +62,14 @@ public struct UserDetail: View {
                 if let repos = repos, !repos.isEmpty {
                     VStack(alignment: .leading, spacing: 12) {
                         Text("Repositories")
-                            .font(.headline)
+                            .font(.title3)
+                            .bold()
 
                         ForEach(repos, id: \.id) { repo in
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(repo.name)
                                     .font(.subheadline)
+                                    .foregroundColor(.blue)
                                     .bold()
                                 if let desc = repo.description {
                                     Text(desc)
