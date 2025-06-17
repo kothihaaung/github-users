@@ -43,7 +43,6 @@ public struct Network: NetworkConvertible {
                 return Response(value: value, response: response)
             }
             .eraseToAnyPublisher()
-
     }
 }
 

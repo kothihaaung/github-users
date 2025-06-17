@@ -39,20 +39,16 @@ public final class GitHubRepo: GitHubRepoConvertible, @unchecked Sendable {
             .eraseToAnyPublisher()
     }
     
-    public func getUserRepos(login: String, perPage: Int) -> AnyPublisher<[Repo], Error> {
-        let api: GitHubAPI = .repos(login: login, perPage: perPage)
+    public func getUserRepos(login: String, perPage: Int, page: Int) -> AnyPublisher<(repos:[Repo], nextPage: Int?), Error> {
+        let api: GitHubAPI = .repos(login: login, perPage: perPage, page: page)
 
         let publisher: AnyPublisher<Response<[Repo]>, Error> = network.run(api)
 
         return publisher
             .map { response in
                 let nextPage = self.extractNextPage(from: response.response)
-                
-                print("next page: \(String(describing: nextPage))")
-                
-                return (users: response.value, nextPage: nextPage)
+                return (repos: response.value, nextPage: nextPage)
             }
-            .map(\.users)
             .eraseToAnyPublisher()
     }
     

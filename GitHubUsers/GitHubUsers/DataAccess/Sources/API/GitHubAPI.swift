@@ -10,7 +10,7 @@ import Alamofire
 enum GitHubAPI: DataAPI {
     case users(since: Int, perPage: Int)
     case userDetail(login: String)
-    case repos(login: String, perPage: Int)
+    case repos(login: String, perPage: Int, page: Int)
     
     private var baseURL: String { "api.github.com" }
     
@@ -22,7 +22,7 @@ enum GitHubAPI: DataAPI {
         case .userDetail(let login):
             "https://\(baseURL)/users/\(login)"
             
-        case .repos(let login, _):
+        case .repos(let login,_,_):
             "https://\(baseURL)/users/\(login)/repos"
         }
     }
@@ -47,8 +47,9 @@ enum GitHubAPI: DataAPI {
             query["per_page"] = perPage
             return query
             
-        case .repos(_, let perPage):
+        case .repos(_, let perPage, let page):
             var query: [String: any Sendable] = [:]
+            query["page"] = page
             query["per_page"] = perPage
             return query
             

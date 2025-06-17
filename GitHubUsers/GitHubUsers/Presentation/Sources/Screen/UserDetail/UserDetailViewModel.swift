@@ -17,6 +17,11 @@ class UserDetailViewModel: ObservableObject {
     
     private let gitHubUseCases: GitHubUseCasesConvertible
     
+    // Pagination page size
+    private let perPage = 30
+    
+    private var nextPage = 1
+    
     init(gitHubUseCases: GitHubUseCasesConvertible = GitHubUseCases()) {
         self.gitHubUseCases = gitHubUseCases
     }
@@ -27,10 +32,14 @@ class UserDetailViewModel: ObservableObject {
         do {
             let result = try await gitHubUseCases
                 .getUserDetailWithRepos
-                .execute(login: login, perPage: 100)
+                .execute(login: login, perPage: perPage, page: self.nextPage)
             
             self.userDetail = result.0
             self.userRepos = result.1
+            
+            if let nextPage = result.2 {
+                self.nextPage = nextPage
+            }
             
         } catch {
             print("log: error: loadUserDetailWithRepos: \(error)")

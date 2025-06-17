@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public protocol GetUserDetailWithReposUseCaseConvertible: Sendable {
-    func execute(login: String, perPage: Int) async throws -> (UserDetail, [Repo])
+    func execute(login: String, perPage: Int, page: Int) async throws -> (UserDetail, [Repo], Int?)
 }
 
 public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseConvertible, @unchecked Sendable {
@@ -20,12 +20,13 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
         self.repo = repo
     }
     
-    private func execute(login: String, perPage: Int, completionHandler: @escaping (Result<(UserDetail, [Repo]), Error>) -> Void) {
+    private func execute(login: String, perPage: Int, page: Int, completionHandler: @escaping (Result<(UserDetail, [Repo], Int?), Error>) -> Void) {
         let userDetailPublisher = repo.getUserDetail(login: login)
         let userReposPublisher = repo
-            .getUserRepos(login: login, perPage: perPage)
-            .map { repos in
-                repos.filter { !$0.fork } // filtered out forked repos
+            .getUserRepos(login: login, perPage: perPage, page: page)
+            .map { result in
+                let repos = result.repos.filter { !$0.fork } // filtered out forked repos
+                return (repos: repos, nextPage: result.nextPage)
             }
             .eraseToAnyPublisher()
         
@@ -35,15 +36,15 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
                 if case .failure(let error) = completion {
                     completionHandler(.failure(error))
                 }
-            } receiveValue: { userDetail, repos in
-                completionHandler(.success((userDetail, repos)))
+            } receiveValue: { userDetail, repoResult in
+                completionHandler(.success((userDetail, repoResult.repos, repoResult.nextPage)))
             }
             .store(in: &subscriptions)
     }
     
-    public func execute(login: String, perPage: Int) async throws -> (UserDetail, [Repo]) {
+    public func execute(login: String, perPage: Int, page: Int) async throws -> (UserDetail, [Repo], Int?) {
         try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.execute(login: login, perPage: perPage, completionHandler: { result in
+            self?.execute(login: login, perPage: perPage, page: page, completionHandler: { result in
                 switch result {
                 case .success(let userDetailWithRepos):
                     continuation.resume(returning: userDetailWithRepos)
