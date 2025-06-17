@@ -20,7 +20,7 @@ class UserListViewModel: ObservableObject {
         self.gitHubUseCases = gitHubUseCases
     }
     
-    func loadUsers() async {
+    func load() async {
         self.isLoading = true
         
         do {

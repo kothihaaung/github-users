@@ -25,7 +25,7 @@ public struct UserListView: View {
         }
         .task {
             if viewModel.users.isEmpty {
-                await viewModel.loadUsers()
+                await viewModel.load()
             }
         }
     }

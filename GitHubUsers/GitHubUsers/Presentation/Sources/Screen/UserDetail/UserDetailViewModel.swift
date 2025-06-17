@@ -43,12 +43,10 @@ class UserDetailViewModel: ObservableObject {
             
             self.userDetail = result.0
             self.userRepos.append(contentsOf: result.1)
-            
             self.nextPage = result.2
             
         } catch {
             self.error = error
-            print("log: error: loadUserDetailWithRepos: \(error)")
         }
         
         self.isLoading = false

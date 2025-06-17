@@ -60,11 +60,7 @@ extension UserDetailView {
                     }
                     
                     if viewModel.isLoadingMore {
-                        HStack {
-                            Spacer()
-                            ProgressView()
-                            Spacer()
-                        }
+                        LoadingMoreRepoView()
                     }
                 }
             }

@@ -20,6 +20,7 @@ struct UserRow: View {
             Spacer()
             
             Image(systemName: "chevron.right")
+                .foregroundColor(.gray)
         }
         .contentShape(Rectangle()) // 👈 makes the entire row tappable
     }
