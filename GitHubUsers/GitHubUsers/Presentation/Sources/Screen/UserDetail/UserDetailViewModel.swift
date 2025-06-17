@@ -12,10 +12,10 @@ import Di
 @MainActor
 class UserDetailViewModel: ObservableObject {
     @Published private(set) var isLoading = true
+    @Published private(set) var isLoadingMore: Bool = false
     @Published private(set) var userDetail: Domain.UserDetail?
     @Published private(set) var userRepos: [Domain.Repo] = []
-    @Published private(set) var error: Error?
-    @Published private(set) var isLoadingMore: Bool = false
+    @Published private(set) var isError = false
     
     private let gitHubUseCases: GitHubUseCasesConvertible
     
@@ -33,6 +33,7 @@ class UserDetailViewModel: ObservableObject {
             return
         }
         
+        self.isError = false
         self.isLoading = !more
         self.isLoadingMore = more
         
@@ -46,7 +47,8 @@ class UserDetailViewModel: ObservableObject {
             self.nextPage = result.2
             
         } catch {
-            self.error = error
+            self.isError = true
+            print("log: error: loadUserDetail: \(error)")
         }
         
         self.isLoading = false

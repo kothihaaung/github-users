@@ -35,14 +35,26 @@ public struct UserListView: View {
 extension UserListView {
     private var userList: some View {
         NavigationStack(path: $navigationManager.path) {
-            VStack {
-                List(viewModel.users, id: \.id) { user in
+            List {
+                ForEach(viewModel.users, id: \.id) { user in
                     UserRow(login: user.login, avatarUrl: user.avatarURL)
+                        .onAppear {
+                            if user.id == viewModel.users.last?.id {
+                                Task {
+                                    await viewModel.load(more: true)
+                                }
+                            }
+                        }
                         .onTapGesture {
                             navigationManager.path.append(.userDetail(user.login))
                         }
                 }
+                
+                if viewModel.isLoadingMore {
+                    LoadingMorView()
+                }
             }
+
             .navigationDestination(for: NavigationManager.Path.self) { path in
                 switch path {
                 case .userDetail(let login):

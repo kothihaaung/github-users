@@ -1,5 +1,5 @@
 //
-//  WebView.swift
+//  SafariView.swift
 //  Presentation
 //
 //  Created by Thiha the Dev on 2025/06/16.

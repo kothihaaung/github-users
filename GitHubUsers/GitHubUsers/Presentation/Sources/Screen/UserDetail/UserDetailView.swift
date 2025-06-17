@@ -60,7 +60,7 @@ extension UserDetailView {
                     }
                     
                     if viewModel.isLoadingMore {
-                        LoadingMoreRepoView()
+                        LoadingMorView()
                     }
                 }
             }
