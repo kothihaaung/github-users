@@ -17,7 +17,6 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/Alamofire/Alamofire.git", .upToNextMajor(from: "5.10.2")),
-        .package(url: "https://github.com/realm/realm-swift.git", .upToNextMajor(from: "20.0.2")),
         .package(path: "../Domain")
     ],
     targets: [
@@ -25,8 +24,10 @@ let package = Package(
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
             name: "DataAccess",
-            dependencies: ["Alamofire",
-                           "Domain",
-                .product(name: "RealmSwift", package: "realm-swift")]),
+            dependencies: [
+                "Alamofire",
+                "Domain",
+            ]
+        ),
     ]
 )
