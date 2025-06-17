@@ -15,7 +15,7 @@ class UserDetailViewModel: ObservableObject {
     @Published private(set) var userDetail: Domain.UserDetail?
     @Published private(set) var userRepos: [Domain.Repo] = []
     @Published private(set) var error: Error?
-    @Published private(set) var isLoadingMoreRepos: Bool = false
+    @Published private(set) var isLoadingMore: Bool = false
     
     private let gitHubUseCases: GitHubUseCasesConvertible
     
@@ -33,10 +33,8 @@ class UserDetailViewModel: ObservableObject {
             return
         }
         
-        print("load: more: \(more)")
-        
-        self.isLoading = true
-        self.isLoadingMoreRepos = more
+        self.isLoading = !more
+        self.isLoadingMore = more
         
         do {
             let result = try await gitHubUseCases
@@ -54,6 +52,6 @@ class UserDetailViewModel: ObservableObject {
         }
         
         self.isLoading = false
-        self.isLoadingMoreRepos = false
+        self.isLoadingMore = false
     }
 }
