@@ -38,7 +38,7 @@ public struct Network: NetworkConvertible {
                 else {
                     throw NetworkError.noResponseData
                 }
-
+                
                 let value = try decoder.decode(T.self, from: data)
                 return Response(value: value, response: response)
             }
