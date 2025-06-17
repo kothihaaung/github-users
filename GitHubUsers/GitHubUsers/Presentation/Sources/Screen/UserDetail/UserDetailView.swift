@@ -13,8 +13,7 @@ public struct UserDetailView: View {
     let login: String
     
     @StateObject private var viewModel = UserDetailViewModel()
-    @State private var selectedRepoURL: URL? = nil
-    @State private var isShowingWebView = false
+    @State private var selectedWebLink: WebLink?
     
     private var detail: Domain.UserDetail? { viewModel.userDetail }
     private var repos: [Domain.Repo]? { viewModel.userRepos }
@@ -77,9 +76,9 @@ public struct UserDetailView: View {
                         ForEach(repos, id: \.id) { repo in
                             Button {
                                 if let url = URL(string: repo.htmlURL) {
-                                    selectedRepoURL = url
-                                    isShowingWebView = true
+                                    selectedWebLink = WebLink(url: url)
                                 }
+
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(repo.name)
@@ -123,10 +122,8 @@ public struct UserDetailView: View {
         .task {
             await viewModel.load(login: login)
         }
-        .sheet(isPresented: $isShowingWebView) {
-            if let url = selectedRepoURL {
-                SafariView(url: url)
-            }
+        .sheet(item: $selectedWebLink) { webLink in
+            SafariView(url: webLink.url)
         }
     }
 }
