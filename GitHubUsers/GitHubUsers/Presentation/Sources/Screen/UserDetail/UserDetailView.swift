@@ -1,10 +1,3 @@
-//
-//  UserDetailView.swift
-//  Presentation
-//
-//  Created by Thiha the Dev on 2025/06/16.
-//
-
 import SwiftUI
 import SDWebImageSwiftUI
 import Domain
@@ -19,142 +12,143 @@ public struct UserDetailView: View {
     private var repos: [Domain.Repo]? { viewModel.userRepos }
     
     public var body: some View {
-        ScrollView {
-            VStack(spacing: 16) {
-                HStack(alignment: .top, spacing: 16) {
-                    AnimatedImage(url: URL(string: detail?.avatarURL ?? ""))
-                        .resizable()
-                        .scaledToFill()
-                        .frame(width: 80, height: 80)
-                        .clipShape(Circle())
-                        .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1))
-                    
-                    VStack(alignment: .leading, spacing: 4) {
-                        Text(detail?.name ?? "")
-                            .font(.title3)
-                            .bold()
-                        
-                        Text(login)
-                            .font(.subheadline)
-                            .foregroundColor(.secondary)
-                        
-                        if let bio = detail?.bio, !bio.isEmpty {
-                            Text(bio)
-                                .font(.body)
-                                .foregroundColor(.primary)
-                                .lineLimit(3)
-                        }
-                    }
-                    
-                    Spacer()
+        List {
+            if detail != nil {
+                Section {
+                    userHeaderSection
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(12)
-                
-                HStack(spacing: 24) {
-                    if let followers = detail?.followers {
-                        StatView(label: "Followers", value: followers)
-                    }
-                    if let following = detail?.following {
-                        StatView(label: "Following", value: following)
-                    }
-                    if let repos = detail?.publicRepos {
-                        StatView(label: "Repos", value: repos)
-                    }
+
+                Section {
+                    statSection
                 }
-                .padding()
-                .background(Color(.secondarySystemBackground))
-                .cornerRadius(12)
-                
-                if let repos = repos, !repos.isEmpty {
-                    VStack(alignment: .leading, spacing: 12) {
-                        Text("Repositories")
-                            .font(.title3)
-                            .bold()
-                        
-                        ForEach(repos, id: \.id) { repo in
-                            Button {
-                                if let url = URL(string: repo.htmlURL) {
-                                    selectedWebLink = WebLink(url: url)
-                                }
-                                
-                            } label: {
-                                VStack(alignment: .leading, spacing: 4) {
-                                    Text(repo.name)
-                                        .font(.subheadline)
-                                        .foregroundColor(.blue)
-                                        .bold()
-                                    
-                                    if let desc = repo.description {
-                                        Text(desc)
-                                            .font(.caption)
-                                            .foregroundColor(.secondary)
-                                    }
-                                    
-                                    HStack(spacing: 12) {
-                                        if let language = repo.language {
-                                            Text(language)
-                                                .font(.caption2)
-                                                .foregroundColor(.blue)
-                                                .padding(.horizontal, 8)
-                                                .padding(.vertical, 4)
-                                                .overlay(
-                                                    Capsule()
-                                                        .stroke(Color.blue.opacity(0.7), lineWidth: 1)
-                                                )
-                                        }
-                                        
-                                        HStack(spacing: 4) {
-                                            Image(systemName: "star.fill")
-                                                .foregroundColor(.yellow)
-                                                .font(.caption2)
-                                            Text("\(repo.stargazersCount)")
-                                                .font(.caption2)
-                                                .foregroundColor(.secondary)
-                                        }
-                                    }
-                                }
-                                .padding(.vertical, 4)
-                                .frame(maxWidth: .infinity, alignment: .leading)
-                                .onAppear {
-                                    if repo.id == repos.last?.id {
-                                        Task {
-                                            await viewModel.load(login: login, more: true)
-                                        }
-                                    }
-                                }
-                                
-                            }
-                            .buttonStyle(PlainButtonStyle())
-                        }
-                        
-                        if viewModel.isLoadingMoreRepos {
-                            HStack {
-                                Spacer()
-                                ProgressView()
-                                    .progressViewStyle(CircularProgressViewStyle())
-                                    .padding()
-                                Spacer()
-                            }
-                        }
-                    }
-                    .padding(.top)
-                }
-                
-                Spacer()
-                
             }
-            .padding()
+
+            if let repos = repos {
+                Section(header: Text("Repositories").font(.title3).bold()) {
+                    ForEach(repos, id: \.id) { repo in
+                        repoRow(repo)
+                            .onAppear {
+                                if repo.id == repos.last?.id {
+                                    Task {
+                                        await viewModel.load(login: login, more: true)
+                                    }
+                                }
+                            }
+                    }
+
+                    if viewModel.isLoadingMoreRepos {
+                        HStack {
+                            Spacer()
+                            ProgressView()
+                            Spacer()
+                        }
+                    }
+                }
+            }
+        }
+        .listStyle(.inset)
+        .sheet(item: $selectedWebLink) { webLink in
+            SafariView(url: webLink.url)
         }
         .task {
             await viewModel.load(login: login)
         }
-        .sheet(item: $selectedWebLink) { webLink in
-            SafariView(url: webLink.url)
+    }
+
+    // MARK: - Sections
+
+    private var userHeaderSection: some View {
+        HStack(alignment: .top, spacing: 16) {
+            AnimatedImage(url: URL(string: detail?.avatarURL ?? ""))
+                .resizable()
+                .scaledToFill()
+                .frame(width: 80, height: 80)
+                .clipShape(Circle())
+                .overlay(Circle().stroke(Color.gray.opacity(0.3), lineWidth: 1))
+
+            VStack(alignment: .leading, spacing: 4) {
+                Text(detail?.name ?? "")
+                    .font(.title3).bold()
+
+                Text(login)
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+
+                if let bio = detail?.bio, !bio.isEmpty {
+                    Text(bio)
+                        .font(.body)
+                        .foregroundColor(.primary)
+                        .lineLimit(3)
+                }
+            }
+
+            Spacer()
         }
     }
+
+    private var statSection: some View {
+        HStack(spacing: 24) {
+            if let followers = detail?.followers {
+                StatView(label: "Followers", value: followers)
+            }
+            if let following = detail?.following {
+                StatView(label: "Following", value: following)
+            }
+            if let repos = detail?.publicRepos {
+                StatView(label: "Repos", value: repos)
+            }
+        }
+    }
+
+    private func repoRow(_ repo: Domain.Repo) -> some View {
+        Button {
+            if let url = URL(string: repo.htmlURL) {
+                selectedWebLink = WebLink(url: url)
+            }
+        } label: {
+            VStack(alignment: .leading, spacing: 4) {
+                Text(repo.name)
+                    .font(.subheadline)
+                    .foregroundColor(.blue)
+                    .bold()
+
+                if let desc = repo.description {
+                    Text(desc)
+                        .font(.caption)
+                        .foregroundColor(.secondary)
+                }
+
+                HStack(spacing: 12) {
+                    if let language = repo.language {
+                        Text(language)
+                            .font(.caption2)
+                            .foregroundColor(.blue)
+                            .padding(.horizontal, 8)
+                            .padding(.vertical, 4)
+                            .overlay(
+                                Capsule()
+                                    .stroke(Color.blue.opacity(0.7), lineWidth: 1)
+                            )
+                    }
+
+                    HStack(spacing: 4) {
+                        Image(systemName: "star.fill")
+                            .foregroundColor(.yellow)
+                            .font(.caption2)
+                        Text("\(repo.stargazersCount)")
+                            .font(.caption2)
+                            .foregroundColor(.secondary)
+                    }
+                }
+            }
+            .padding(.vertical, 4)
+            .frame(maxWidth: .infinity, alignment: .leading)
+        }
+        .buttonStyle(PlainButtonStyle())
+    }
 }
+
+// MARK: - StatView
 
 private struct StatView: View {
     let label: String
@@ -184,4 +178,3 @@ private struct StatView: View {
         }
     }
 }
-
