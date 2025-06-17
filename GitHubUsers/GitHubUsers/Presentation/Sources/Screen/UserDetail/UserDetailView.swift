@@ -78,7 +78,7 @@ public struct UserDetailView: View {
                                 if let url = URL(string: repo.htmlURL) {
                                     selectedWebLink = WebLink(url: url)
                                 }
-
+                                
                             } label: {
                                 VStack(alignment: .leading, spacing: 4) {
                                     Text(repo.name)
@@ -104,7 +104,7 @@ public struct UserDetailView: View {
                                                         .stroke(Color.blue.opacity(0.7), lineWidth: 1)
                                                 )
                                         }
-
+                                        
                                         HStack(spacing: 4) {
                                             Image(systemName: "star.fill")
                                                 .foregroundColor(.yellow)
@@ -117,8 +117,26 @@ public struct UserDetailView: View {
                                 }
                                 .padding(.vertical, 4)
                                 .frame(maxWidth: .infinity, alignment: .leading)
+                                .onAppear {
+                                    if repo.id == repos.last?.id {
+                                        Task {
+                                            await viewModel.load(login: login, more: true)
+                                        }
+                                    }
+                                }
+                                
                             }
                             .buttonStyle(PlainButtonStyle())
+                        }
+                        
+                        if viewModel.isLoadingMoreRepos {
+                            HStack {
+                                Spacer()
+                                ProgressView()
+                                    .progressViewStyle(CircularProgressViewStyle())
+                                    .padding()
+                                Spacer()
+                            }
                         }
                     }
                     .padding(.top)

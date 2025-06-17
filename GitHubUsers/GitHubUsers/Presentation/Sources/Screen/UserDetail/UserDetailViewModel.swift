@@ -14,37 +14,46 @@ class UserDetailViewModel: ObservableObject {
     @Published private(set) var isLoading = true
     @Published private(set) var userDetail: Domain.UserDetail?
     @Published private(set) var userRepos: [Domain.Repo] = []
+    @Published private(set) var error: Error?
+    @Published private(set) var isLoadingMoreRepos: Bool = false
     
     private let gitHubUseCases: GitHubUseCasesConvertible
     
     // Pagination page size
     private let perPage = 30
     
-    private var nextPage = 1
+    private var nextPage: Int?
     
     init(gitHubUseCases: GitHubUseCasesConvertible = GitHubUseCases()) {
         self.gitHubUseCases = gitHubUseCases
     }
     
-    func load(login: String) async {
+    func load(login: String, more: Bool = false) async {
+        if more && nextPage == nil {
+            return
+        }
+        
+        print("load: more: \(more)")
+        
         self.isLoading = true
+        self.isLoadingMoreRepos = more
         
         do {
             let result = try await gitHubUseCases
                 .getUserDetailWithRepos
-                .execute(login: login, perPage: perPage, page: self.nextPage)
+                .execute(login: login, perPage: perPage, page: self.nextPage ?? 1)
             
             self.userDetail = result.0
-            self.userRepos = result.1
+            self.userRepos.append(contentsOf: result.1)
             
-            if let nextPage = result.2 {
-                self.nextPage = nextPage
-            }
+            self.nextPage = result.2
             
         } catch {
+            self.error = error
             print("log: error: loadUserDetailWithRepos: \(error)")
         }
         
         self.isLoading = false
+        self.isLoadingMoreRepos = false
     }
 }

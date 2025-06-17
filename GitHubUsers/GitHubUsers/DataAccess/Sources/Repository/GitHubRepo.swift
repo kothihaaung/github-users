@@ -56,8 +56,7 @@ public final class GitHubRepo: GitHubRepoConvertible, @unchecked Sendable {
         guard let linkHeader = response.value(forHTTPHeaderField: "Link") else {
             return nil
         }
-
-        // Look for the next sence from `rel="next"` link
+        
         let pattern = #"<(.*?)>; rel="next""#
         guard let match = linkHeader.range(of: pattern, options: .regularExpression) else {
             return nil
