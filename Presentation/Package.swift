@@ -4,27 +4,18 @@
 import PackageDescription
 
 let package = Package(
-    name: "Di",
-    platforms: [
-        .iOS(.v13),
-        .macOS(.v10_15)
-    ],
+    name: "Presentation",
     products: [
         // Products define the executables and libraries a package produces, making them visible to other packages.
         .library(
-            name: "Di",
-            targets: ["Di"]),
-    ],
-    dependencies: [
-        .package(path: "../Domain"),
-        .package(path: "../DataAccess"),
+            name: "Presentation",
+            targets: ["Presentation"]),
     ],
     targets: [
         // Targets are the basic building blocks of a package, defining a module or a test suite.
         // Targets can depend on other targets in this package and products from dependencies.
         .target(
-            name: "Di", dependencies: [
-                "Domain",
-                .product(name: "DataAccess", package: "DataAccess")]),
+            name: "Presentation"),
+
     ]
 )
