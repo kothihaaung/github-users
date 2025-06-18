@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		40611BBC2DFDCB740093A215 /* Presentation in Frameworks */ = {isa = PBXBuildFile; productRef = 40611BBB2DFDCB740093A215 /* Presentation */; };
+		40AD87762E024D4700275D91 /* Domain in Frameworks */ = {isa = PBXBuildFile; productRef = 40AD87752E024D4700275D91 /* Domain */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -26,6 +27,15 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		405845AC2E0253850064D2FD /* Exceptions for "GitHubUsersTests" folder in "GitHubUsers" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				Mock/Resource/repos.json,
+				"Mock/Resource/user-detail.json",
+				Mock/Resource/users.json,
+			);
+			target = 40611B6E2DFD985D0093A215 /* GitHubUsers */;
+		};
 		40611BAA2DFD9D480093A215 /* Exceptions for "GitHubUsers" folder in "GitHubUsers" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
@@ -53,6 +63,9 @@
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		40611B7F2DFD985F0093A215 /* GitHubUsersTests */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				405845AC2E0253850064D2FD /* Exceptions for "GitHubUsersTests" folder in "GitHubUsers" target */,
+			);
 			path = GitHubUsersTests;
 			sourceTree = "<group>";
 		};
@@ -80,6 +93,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				40AD87762E024D4700275D91 /* Domain in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -154,6 +168,7 @@
 			);
 			name = GitHubUsersTests;
 			packageProductDependencies = (
+				40AD87752E024D4700275D91 /* Domain */,
 			);
 			productName = GitHubUsersTests;
 			productReference = 40611B7C2DFD985F0093A215 /* GitHubUsersTests.xctest */;
@@ -431,7 +446,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.thihaaung.GitHubUsersTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -449,7 +464,7 @@
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 18.5;
+				IPHONEOS_DEPLOYMENT_TARGET = 16;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.thihaaung.GitHubUsersTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -496,6 +511,10 @@
 		40611BBB2DFDCB740093A215 /* Presentation */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = Presentation;
+		};
+		40AD87752E024D4700275D91 /* Domain */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Domain;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

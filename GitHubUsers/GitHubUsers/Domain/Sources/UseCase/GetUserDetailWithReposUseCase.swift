@@ -9,7 +9,7 @@ import Foundation
 import Combine
 
 public protocol GetUserDetailWithReposUseCaseConvertible: Sendable {
-    func execute(login: String, perPage: Int, page: Int) async throws -> (UserDetail, [Repo], Int?)
+    func execute(login: String, perPage: Int, page: Int) async throws -> (detail: UserDetail, repos: [Repo], nextPage: Int?)
 }
 
 public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseConvertible, @unchecked Sendable {
@@ -42,7 +42,7 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
             .store(in: &subscriptions)
     }
     
-    public func execute(login: String, perPage: Int, page: Int) async throws -> (UserDetail, [Repo], Int?) {
+    public func execute(login: String, perPage: Int, page: Int) async throws -> (detail: UserDetail, repos: [Repo], nextPage: Int?) {
         try await withCheckedThrowingContinuation { [weak self] continuation in
             self?.execute(login: login, perPage: perPage, page: page, completionHandler: { result in
                 switch result {

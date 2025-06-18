@@ -7,7 +7,7 @@
 
 import Foundation
 
-public struct Repo: Decodable, Identifiable, Sendable {
+public struct Repo: Codable, Identifiable, Sendable {
     public let id: Int
     public let nodeID: String
     public let name: String
@@ -49,7 +49,7 @@ public struct Repo: Decodable, Identifiable, Sendable {
 
     public let owner: Owner
 
-    public struct Owner: Decodable, Sendable {
+    public struct Owner: Codable, Sendable {
         public let login: String
         public let id: Int
         public let avatarURL: String

@@ -5,7 +5,7 @@
 //  Created by Thiha the Dev on 2025/06/15.
 //
 
-public struct UserDetail: Decodable, Identifiable, Sendable {
+public struct UserDetail: Codable, Identifiable, Sendable {
     public let id: Int
     public let login: String
     public let nodeID: String

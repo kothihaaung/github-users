@@ -6,31 +6,84 @@
 //
 
 import XCTest
-@testable import GitHubUsers
+@testable import Domain
 
 final class GitHubUsersTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    func test_GetUsersUseCase() async throws {
+        let repo = MockGitHubRepo.shared
+        repo.error = nil
+        repo.shouldReturnNextSince = false
+        
+        let sut = GetUsersUseCase(repo: repo)
+        let result = try await sut.execute(since: 0, perPage: 30)
+        
+        XCTAssertTrue(result.users[0].login == "mojombo")
+        XCTAssertTrue(result.nextSince == nil)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_GetUsersUseCase_WithNextSince() async throws {
+        let repo = MockGitHubRepo.shared
+        repo.error = nil
+        repo.shouldReturnNextSince = true
+        
+        let sut = GetUsersUseCase(repo: repo)
+        let result = try await sut.execute(since: 0, perPage: 30)
+        
+        XCTAssertTrue(result.users[0].login == "mojombo")
+        XCTAssertTrue(result.nextSince == 46)
     }
+    
+    func test_GetUsersUseCase_Error() async {
+        let repo = MockGitHubRepo.shared
+        repo.error = .someError
 
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
+        let sut = GetUsersUseCase(repo: repo)
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+        do {
+            _ = try await sut.execute(since: 0, perPage: 30)
+            XCTFail("Expected error was not thrown")
+        } catch {
+            XCTAssertEqual(error as? MockError, .someError)
         }
     }
+    
+    func test_GetUserDetailWithReposUseCase() async throws {
+        let repo = MockGitHubRepo.shared
+        repo.error = nil
+        repo.shouldReturnNextPage = false
+        
+        let sut = GetUserDetailWithReposUseCase(repo: repo)
+        let result = try await sut.execute(login: "defunkt", perPage: 10, page: 0)
+        
+        XCTAssertTrue(result.0.login == "defunkt")
+        XCTAssertTrue(result.1[0].name == "acts_as_textiled")
+        XCTAssertTrue(result.2 == nil)
+    }
+    
+    func test_GetUserDetailWithReposUseCase_WithNextPage() async throws {
+        let repo = MockGitHubRepo.shared
+        repo.error = nil
+        repo.shouldReturnNextPage = true
+        
+        let sut = GetUserDetailWithReposUseCase(repo: repo)
+        let result = try await sut.execute(login: "defunkt", perPage: 30, page: 0)
+        
+        XCTAssertTrue(result.detail.login == "defunkt")
+        XCTAssertTrue(result.repos[0].name == "acts_as_textiled")
+        XCTAssertTrue(result.nextPage == 1)
+    }
+    
+    func test_GetUserDetailWithReposUseCase_Error() async {
+        let repo = MockGitHubRepo.shared
+        repo.error = .someError
 
+        let sut = GetUserDetailWithReposUseCase(repo: repo)
+
+        do {
+            _ = try await sut.execute(login: "defunkt", perPage: 30, page: 0)
+            XCTFail("Expected error was not thrown")
+        } catch {
+            XCTAssertEqual(error as? MockError, .someError)
+        }
+    }
 }

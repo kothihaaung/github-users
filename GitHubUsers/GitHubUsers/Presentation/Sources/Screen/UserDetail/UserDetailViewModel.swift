@@ -42,9 +42,9 @@ class UserDetailViewModel: ObservableObject {
                 .getUserDetailWithRepos
                 .execute(login: login, perPage: perPage, page: self.nextPage ?? 1)
             
-            self.userDetail = result.0
-            self.userRepos.append(contentsOf: result.1)
-            self.nextPage = result.2
+            self.userDetail = result.detail
+            self.userRepos.append(contentsOf: result.repos)
+            self.nextPage = result.nextPage
             
         } catch {
             self.isError = true
