@@ -36,8 +36,8 @@ A SwiftUI iOS app for exploring GitHub users and their repositories. Built with 
 This project uses Swift Concurrency features including `Sendable` protocol conformance.
 
 - Swift Concurrency is available since **Xcode 13 (Swift 5.5)**
-- `Sendable` support and strict enforcement is more mature and stable in **Xcode 16**
-- Using older Xcode versions (13 or 14) may require manual `@unchecked Sendable` and can have limited concurrency safety checks
+- `Sendable` support and strict enforcement is more mature and stable in **Xcode 16.4**
+- Using older Xcode versions (14 or 15) may not able to run this project properly
 
 ---
 
@@ -51,6 +51,23 @@ This project uses Swift Concurrency features including `Sendable` protocol confo
 - ♻️ Smooth **continuous loading** (infinite scroll) for both:
   - User list screen
   - User detail screen with repositories
+
+---
+
+
+## 🏗 Architecture & Project Structure
+
+This project is designed following **Clean Architecture** principles as outlined by Uncle Bob:
+
+- **Separation of concerns** between domain, data, and presentation layers  
+- Clear boundaries to make code testable, maintainable, and scalable  
+- Inspired by [The Clean Architecture (Uncle Bob’s blog)](https://blog.cleancoder.com/uncle-bob/2012/08/13/the-clean-architecture.html)
+
+Modules are organized as **Swift Packages**, modeled after Apple’s **Backyard Birds** sample:
+
+- Each module encapsulates a feature or layer  
+- Promotes modularity and reusability  
+- Inspired by [Backyard Birds Sample - Apple Developer Documentation](https://developer.apple.com/documentation/swiftui/backyard-birds-sample)
 
 ---
 
