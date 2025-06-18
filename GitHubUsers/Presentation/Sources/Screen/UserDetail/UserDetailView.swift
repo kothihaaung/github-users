@@ -16,6 +16,13 @@ public struct UserDetailView: View {
             if viewModel.isLoading {
                 ProgressView("Loading...")
                     .padding()
+            } else if viewModel.isError {
+                ErrorView(message: "Something went wrong!") {
+                    Task {
+                        await viewModel.load(login: login)
+                    }
+                }
+                
             } else {
                 userDetail
             }

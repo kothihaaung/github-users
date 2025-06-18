@@ -19,6 +19,13 @@ public struct UserListView: View {
             if viewModel.isLoading {
                 ProgressView("Loading...")
                     .padding()
+                
+            } else if viewModel.isError {
+                ErrorView(message: "Something went wrong!") {
+                    Task {
+                        await viewModel.load()
+                    }
+                }
             } else {
                 userList
             }
