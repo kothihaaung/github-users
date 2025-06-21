@@ -43,15 +43,8 @@ public final class GetUserDetailWithReposUseCase: GetUserDetailWithReposUseCaseC
     }
     
     public func execute(login: String, perPage: Int, page: Int) async throws -> (detail: UserDetail, repos: [Repo], nextPage: Int?) {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.execute(login: login, perPage: perPage, page: page, completionHandler: { result in
-                switch result {
-                case .success(let userDetailWithRepos):
-                    continuation.resume(returning: userDetailWithRepos)
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            })
+        try await asyncFromCompletion { completion in
+            self.execute(login: login, perPage: perPage, page: page, completionHandler: completion)
         }
     }
 }

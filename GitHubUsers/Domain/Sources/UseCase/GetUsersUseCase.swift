@@ -35,15 +35,8 @@ public final class GetUsersUseCase: GetUsersUseCaseConvertible, @unchecked Senda
     }
     
     public func execute(since: Int, perPage: Int) async throws -> (users: [User], nextSince: Int?) {
-        try await withCheckedThrowingContinuation { [weak self] continuation in
-            self?.execute(since: since, perPage: perPage, completionHandler: { result in
-                switch result {
-                case .success(let users):
-                    continuation.resume(returning: users)
-                case .failure(let error):
-                    continuation.resume(throwing: error)
-                }
-            })
+        try await asyncFromCompletion { completion in
+            self.execute(since: since, perPage: perPage, completionHandler: completion)
         }
     }
 }

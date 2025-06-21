@@ -19,7 +19,7 @@ public struct UserDetailView: View {
             } else if viewModel.isError {
                 ErrorView(message: "Something went wrong!") {
                     Task {
-                        await viewModel.load(login: login)
+                        await viewModel.loadUserDetailAndRepos(login: login)
                     }
                 }
                 
@@ -28,7 +28,7 @@ public struct UserDetailView: View {
             }
         }
         .task {
-            await viewModel.load(login: login)
+            await viewModel.loadUserDetailAndRepos(login: login)
         }
     }
 }
@@ -60,7 +60,7 @@ extension UserDetailView {
                             .onAppear {
                                 if repo.id == repos.last?.id {
                                     Task {
-                                        await viewModel.load(login: login, more: true)
+                                        await viewModel.loadMoreRepos(login: login)
                                     }
                                 }
                             }

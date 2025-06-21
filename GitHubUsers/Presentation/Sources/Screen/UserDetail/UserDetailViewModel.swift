@@ -28,14 +28,9 @@ class UserDetailViewModel: ObservableObject {
         self.gitHubUseCases = gitHubUseCases
     }
     
-    func load(login: String, more: Bool = false) async {
-        if more && nextPage == nil {
-            return
-        }
-        
+    func loadUserDetailAndRepos(login: String) async {
         self.isError = false
-        self.isLoading = !more
-        self.isLoadingMore = more
+        self.isLoading = true
         
         do {
             let result = try await gitHubUseCases
@@ -52,6 +47,29 @@ class UserDetailViewModel: ObservableObject {
         }
         
         self.isLoading = false
+    }
+    
+    func loadMoreRepos(login: String) async {
+        guard nextPage != nil else {
+            return
+        }
+        
+        self.isError = false
+        self.isLoadingMore = true
+        
+        do {
+            let result = try await gitHubUseCases
+                .getRepos
+                .execute(login: login, perPage: perPage, page: self.nextPage ?? 1)
+            
+            self.userRepos.append(contentsOf: result.repos)
+            self.nextPage = result.nextPage
+            
+        } catch {
+            self.isError = true
+            print("log: error: loadUserDetail: \(error)")
+        }
+        
         self.isLoadingMore = false
     }
 }
